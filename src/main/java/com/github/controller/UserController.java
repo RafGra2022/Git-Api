@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.domain.GithubService;
-import com.github.exception.ApplicationRequestException;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -22,7 +21,7 @@ public class UserController {
 	private final GithubService githubService;
 
 	@GetMapping(value = "/repository", produces = "application/json" )
-	public UserRepositoryResponse getRepo(@Valid @NotBlank(message = "user is required") @RequestHeader(required = true) String user) throws ApplicationRequestException {
+	public UserRepositoryResponse getRepo(@Valid @NotBlank(message = "user is required") @RequestHeader(required = true) String user)  {
 			return UserRepositoryResponseMapper.mapToUserRepositoryResponse(githubService.getUserRepositories(user));
 		
 	}

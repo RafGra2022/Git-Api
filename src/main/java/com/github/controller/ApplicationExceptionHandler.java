@@ -1,4 +1,4 @@
-package com.github.exception;
+package com.github.controller;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 

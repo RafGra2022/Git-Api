@@ -1,4 +1,4 @@
-package com.github.exception;
+package com.github.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
