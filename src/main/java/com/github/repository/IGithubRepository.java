@@ -2,10 +2,10 @@ package com.github.repository;
 
 import java.util.List;
 
-import com.github.domain.UserRepositoryDto;
+import com.github.dto.GithubRepositoryDto;
 
 public interface IGithubRepository {
 
-	List<UserRepositoryDto> getRepositories(String user);
+	List<GithubRepositoryDto> getRepositories(String user);
 
 }

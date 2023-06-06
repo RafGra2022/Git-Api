@@ -9,10 +9,11 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.github.domain.RepositoryBranchDto;
-import com.github.domain.RepositoryBranchMapper;
-import com.github.domain.UserRepositoryDto;
-import com.github.domain.UserRepositoryMapper;
+import com.github.dto.GithubRepositoryDto;
+import com.github.model.BranchDetail;
+import com.github.model.RepositoryDetail;
+import com.github.service.GithubBranchMapper;
+import com.github.service.GithubRepositoryMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,17 +25,20 @@ import reactor.core.publisher.Mono;
 class GithubRepository implements IGithubRepository {
 
 	private final WebClient gitHubApi;
+	private final GithubBranchMapper repositoryBranchMapper;
+	private final GithubRepositoryMapper userRepositoryMapper;
+	
 	private final static String PATH_USER_REPO ="users/%s/repos";
 	private final static String PATH_USER_BRANCHES = "repos/%s/%s/branches";
 	
 	@Override
-	public List<UserRepositoryDto> getRepositories(String user) {
+	public List<GithubRepositoryDto> getRepositories(String user) {
 		
 		return fetchUserRepositories(user).stream().map(repositoryDetail -> {
-			List<RepositoryBranchDto> branches = RepositoryBranchMapper
-					.mapToRepositoryBranchBean(fetchBranchDetails(user, repositoryDetail.getName()));
+			var branches = repositoryBranchMapper
+					.mapToGithubRepositoryBranchDtos(fetchBranchDetails(user, repositoryDetail.name()));
 			
-			return UserRepositoryMapper.mapToUserRepositoryBean(repositoryDetail, branches);
+			return userRepositoryMapper.mapToGithubRepositoryDto(repositoryDetail, branches);
 		}).toList();
 		
 	}

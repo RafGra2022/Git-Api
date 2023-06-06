@@ -1,5 +1,6 @@
 package com.github.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -10,7 +11,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.github.dto.GithubRepositoryDto;
 import com.github.repository.IGithubRepository;
+import com.github.service.GithubService;
 
 @ExtendWith(MockitoExtension.class)
 public class GithubServiceTests {
@@ -23,13 +26,13 @@ public class GithubServiceTests {
 	@Test
 	public void shouldReturn1UserRepository() {
 
-		UserRepositoryDto userRepositoryDto1 = UserRepositoryDto.builder().repository("RafGra2022").forks(2).build();
-		UserRepositoryDto userRepositoryDto2 = UserRepositoryDto.builder().repository("RafGra2023").forks(0).build();
-		List<UserRepositoryDto> userRepositoryDtos = List.of(userRepositoryDto1,userRepositoryDto2);
+		GithubRepositoryDto userRepositoryDto1 = new GithubRepositoryDto("RafGra2022","RafGra2022",new ArrayList<>(),2);
+		GithubRepositoryDto userRepositoryDto2 = new GithubRepositoryDto("RafGra2022","RafGra2022",new ArrayList<>(),0);
+		List<GithubRepositoryDto> userRepositoryDtos = List.of(userRepositoryDto1,userRepositoryDto2);
 
 		Mockito.when(githubRepository.getRepositories(Mockito.any())).thenReturn(userRepositoryDtos);
 
-		List<UserRepositoryDto> repositories = githubService.getUserRepositories("RafGra2022");
+		List<GithubRepositoryDto> repositories = githubService.getUserRepositories("RafGra2022");
 
 		Assertions.assertEquals(1, repositories.size());
 	}
@@ -37,11 +40,11 @@ public class GithubServiceTests {
 	@Test
 	public void shouldReturnEmptyList() {
 
-		List<UserRepositoryDto> userRepositoryDtos = List.of();
+		List<GithubRepositoryDto> userRepositoryDtos = List.of();
 
 		Mockito.when(githubRepository.getRepositories(Mockito.any())).thenReturn(userRepositoryDtos);
 
-		List<UserRepositoryDto> repositories = githubService.getUserRepositories("RafGra2022");
+		List<GithubRepositoryDto> repositories = githubService.getUserRepositories("RafGra2022");
 
 		Assertions.assertEquals(0, repositories.size());
 	}

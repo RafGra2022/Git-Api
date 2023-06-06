@@ -1,15 +1,4 @@
 package com.github.controller;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+public record ErrorMessageResponse(String message, int httpStatus) {}
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-public class ErrorMessageResponse{
-
-	private String message;
-	private int httpStatus;
-	
-}

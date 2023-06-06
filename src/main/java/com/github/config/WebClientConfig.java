@@ -21,7 +21,7 @@ public class WebClientConfig {
 	
 	@Bean
 	public WebClient gitHubApi() {
-		HttpClient client = HttpClient.create()
+		var client = HttpClient.create()
 				  .responseTimeout(Duration.ofSeconds(timeout));
 		
 		return WebClient.builder()

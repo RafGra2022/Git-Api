@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.domain.GithubService;
+import com.github.service.GithubService;
+import com.github.service.GithubRepositoryResponseMapper;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -14,16 +15,16 @@ import lombok.RequiredArgsConstructor;
 
 @Validated
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/github")
 @RequiredArgsConstructor
-public class UserController {
+public class GithubRepositoryController {
 
 	private final GithubService githubService;
+	private final GithubRepositoryResponseMapper userRepositoryResponseMapper;
 
 	@GetMapping(value = "/repository", produces = "application/json" )
-	public UserRepositoryResponse getRepo(@Valid @NotBlank(message = "user is required") @RequestHeader(required = true) String user)  {
-			return UserRepositoryResponseMapper.mapToUserRepositoryResponse(githubService.getUserRepositories(user));
-		
+	public GithubRepositoryResponse getRepo(@Valid @NotBlank(message = "user is required") @RequestHeader(required = true) String user)  {
+			return userRepositoryResponseMapper.mapToGithubRepositoryResponse(githubService.getUserRepositories(user));
 	}
 
 }

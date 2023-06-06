@@ -22,15 +22,15 @@ public class ApplicationExceptionHandler {
 	@ExceptionHandler(UserPrincipalNotFoundException.class)
 	public ResponseEntity<ErrorMessageResponse> userNotFoundException(HttpServletRequest req, UserPrincipalNotFoundException ex) {
 		log.error("Request url: {}", req.getRequestURL(), ex);
-		ErrorMessageResponse errorMessageResponse = new ErrorMessageResponse("User not found", HttpStatus.NOT_FOUND.value());
-		return new ResponseEntity<ErrorMessageResponse>(errorMessageResponse,HttpStatus.NOT_FOUND);
+		var errorMessageResponse = new ErrorMessageResponse("User not found", HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<ErrorMessageResponse>(errorMessageResponse, HttpStatus.NOT_FOUND);
 	}
 	
 	@ExceptionHandler(MissingRequestHeaderException.class)
 	public ResponseEntity<ErrorMessageResponse> missingHeaderException(HttpServletRequest req, MissingRequestHeaderException ex) {
 		log.error("Request url: {}", req.getRequestURL(), ex);
-		ErrorMessageResponse errorMessageResponse = new ErrorMessageResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
-		return new ResponseEntity<ErrorMessageResponse>(errorMessageResponse,HttpStatus.BAD_REQUEST);
+		var errorMessageResponse = new ErrorMessageResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
+		return new ResponseEntity<ErrorMessageResponse>(errorMessageResponse, HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
@@ -38,14 +38,16 @@ public class ApplicationExceptionHandler {
 		log.error("Request url: {}", req.getRequestURL(), ex);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		ErrorMessageResponse errorMessageResponse = new ErrorMessageResponse(ex.getMessage(), HttpStatus.NOT_ACCEPTABLE.value());
-		return 	ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).headers(headers).body(errorMessageResponse);
+		var errorMessageResponse = new ErrorMessageResponse(ex.getMessage(), HttpStatus.NOT_ACCEPTABLE.value());
+		return 	ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+							  .headers(headers)
+							  .body(errorMessageResponse);
 	}
 	
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<ErrorMessageResponse> constraintViolation(HttpServletRequest req, ConstraintViolationException ex) {
 		log.error("Request url: {}", req.getRequestURL(), ex);
-		ErrorMessageResponse errorMessageResponse = new ErrorMessageResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
+		var errorMessageResponse = new ErrorMessageResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
 		return new ResponseEntity<ErrorMessageResponse>(errorMessageResponse,HttpStatus.BAD_REQUEST);
 	}
 }
