@@ -25,7 +25,7 @@ import org.springframework.web.context.WebApplicationContext;
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = {"webclient.github.url=http://localhost:1080"})
-public class UserControllerIntegrationTest {
+public class GithubRepositoryControllerIntegrationTest {
 
     @Autowired
     private ResourceLoader resourceLoader;
