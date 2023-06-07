@@ -15,7 +15,7 @@ public class GithubService {
 
 	private final IGithubRepository githubRepository;
 
-	public List<GithubRepositoryDto> getUserRepositories(String user) {
+	public List<GithubRepositoryDto> getRepositories(String user) {
 		return githubRepository.getRepositories(user)
 						  .stream()
 						  .filter(repo -> repo.forks() < 1)

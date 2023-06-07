@@ -25,6 +25,7 @@ public class GithubRepositoryResponseMapper {
 
 	private static List<GithubBranchResponse> mapToGithubBranchResponses(GithubRepositoryDto userRepositoryDto) {
 		return userRepositoryDto.branches().stream()
-				.map(branch -> new GithubBranchResponse(branch.name(), branch.lastSha())).toList();
+				.map(branch -> new GithubBranchResponse(branch.name(), branch.lastSha()))
+				.toList();
 	}
 }

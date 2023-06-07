@@ -32,7 +32,7 @@ public class GithubServiceTests {
 
 		Mockito.when(githubRepository.getRepositories(Mockito.any())).thenReturn(userRepositoryDtos);
 
-		List<GithubRepositoryDto> repositories = githubService.getUserRepositories("RafGra2022");
+		List<GithubRepositoryDto> repositories = githubService.getRepositories("RafGra2022");
 
 		Assertions.assertEquals(1, repositories.size());
 	}
@@ -44,7 +44,7 @@ public class GithubServiceTests {
 
 		Mockito.when(githubRepository.getRepositories(Mockito.any())).thenReturn(userRepositoryDtos);
 
-		List<GithubRepositoryDto> repositories = githubService.getUserRepositories("RafGra2022");
+		List<GithubRepositoryDto> repositories = githubService.getRepositories("RafGra2022");
 
 		Assertions.assertEquals(0, repositories.size());
 	}

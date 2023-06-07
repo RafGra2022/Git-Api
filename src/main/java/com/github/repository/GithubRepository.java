@@ -12,7 +12,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.github.dto.GithubRepositoryDto;
 import com.github.model.BranchDetail;
 import com.github.model.RepositoryDetail;
-import com.github.service.GithubBranchMapper;
 import com.github.service.GithubRepositoryMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -25,9 +24,7 @@ import reactor.core.publisher.Mono;
 class GithubRepository implements IGithubRepository {
 
 	private final WebClient gitHubApi;
-	private final GithubBranchMapper repositoryBranchMapper;
-	private final GithubRepositoryMapper userRepositoryMapper;
-	
+	private final GithubRepositoryMapper githubRepositoryMapper;
 	private final static String PATH_USER_REPO ="users/%s/repos";
 	private final static String PATH_USER_BRANCHES = "repos/%s/%s/branches";
 	
@@ -35,10 +32,10 @@ class GithubRepository implements IGithubRepository {
 	public List<GithubRepositoryDto> getRepositories(String user) {
 		
 		return fetchUserRepositories(user).stream().map(repositoryDetail -> {
-			var branches = repositoryBranchMapper
+			var branches =  githubRepositoryMapper
 					.mapToGithubRepositoryBranchDtos(fetchBranchDetails(user, repositoryDetail.name()));
 			
-			return userRepositoryMapper.mapToGithubRepositoryDto(repositoryDetail, branches);
+			return githubRepositoryMapper.mapToGithubRepositoryDto(repositoryDetail, branches);
 		}).toList();
 		
 	}

@@ -23,8 +23,8 @@ public class GithubRepositoryController {
 	private final GithubRepositoryResponseMapper userRepositoryResponseMapper;
 
 	@GetMapping(value = "/repository", produces = "application/json" )
-	public GithubRepositoryResponse getRepo(@Valid @NotBlank(message = "user is required") @RequestHeader(required = true) String user)  {
-			return userRepositoryResponseMapper.mapToGithubRepositoryResponse(githubService.getUserRepositories(user));
+	public GithubRepositoryResponse getRepo(@Valid @NotBlank(message = "user is required") @RequestHeader String user)  {
+			return userRepositoryResponseMapper.mapToGithubRepositoryResponse(githubService.getRepositories(user));
 	}
 
 }

@@ -19,35 +19,46 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ApplicationExceptionHandler {
 
-	@ExceptionHandler(UserPrincipalNotFoundException.class)
-	public ResponseEntity<ErrorMessageResponse> userNotFoundException(HttpServletRequest req, UserPrincipalNotFoundException ex) {
-		log.error("Request url: {}", req.getRequestURL(), ex);
-		var errorMessageResponse = new ErrorMessageResponse("User not found", HttpStatus.NOT_FOUND.value());
-		return new ResponseEntity<ErrorMessageResponse>(errorMessageResponse, HttpStatus.NOT_FOUND);
-	}
-	
-	@ExceptionHandler(MissingRequestHeaderException.class)
-	public ResponseEntity<ErrorMessageResponse> missingHeaderException(HttpServletRequest req, MissingRequestHeaderException ex) {
-		log.error("Request url: {}", req.getRequestURL(), ex);
-		var errorMessageResponse = new ErrorMessageResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
-		return new ResponseEntity<ErrorMessageResponse>(errorMessageResponse, HttpStatus.BAD_REQUEST);
-	}
-	
-	@ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
-	public ResponseEntity<ErrorMessageResponse> notAcceptedMediaType(HttpServletRequest req, HttpMediaTypeNotAcceptableException ex) {
-		log.error("Request url: {}", req.getRequestURL(), ex);
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		var errorMessageResponse = new ErrorMessageResponse(ex.getMessage(), HttpStatus.NOT_ACCEPTABLE.value());
-		return 	ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-							  .headers(headers)
-							  .body(errorMessageResponse);
-	}
-	
-	@ExceptionHandler(ConstraintViolationException.class)
-	public ResponseEntity<ErrorMessageResponse> constraintViolation(HttpServletRequest req, ConstraintViolationException ex) {
-		log.error("Request url: {}", req.getRequestURL(), ex);
-		var errorMessageResponse = new ErrorMessageResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
-		return new ResponseEntity<ErrorMessageResponse>(errorMessageResponse,HttpStatus.BAD_REQUEST);
-	}
+    @ExceptionHandler(UserPrincipalNotFoundException.class)
+    public ResponseEntity<ErrorMessageResponse> userNotFoundException(HttpServletRequest req, UserPrincipalNotFoundException ex) {
+        return createErrorMessageResponse(
+                req.getRequestURL().toString(),
+                HttpStatus.NOT_FOUND,
+                ex);
+    }
+
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    public ResponseEntity<ErrorMessageResponse> missingHeaderException(HttpServletRequest req, MissingRequestHeaderException ex) {
+        return createErrorMessageResponse(
+                req.getRequestURL().toString(),
+                HttpStatus.BAD_REQUEST,
+                ex);
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
+    public ResponseEntity<ErrorMessageResponse> notAcceptedMediaType(HttpServletRequest req, HttpMediaTypeNotAcceptableException ex) {
+        return createErrorMessageResponse(
+                req.getRequestURL().toString(),
+                HttpStatus.NOT_ACCEPTABLE,
+                ex);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorMessageResponse> constraintViolation(HttpServletRequest req, ConstraintViolationException ex) {
+        return createErrorMessageResponse(
+                req.getRequestURL().toString(),
+                HttpStatus.BAD_REQUEST,
+                ex);
+    }
+
+    private static ResponseEntity<ErrorMessageResponse> createErrorMessageResponse(String url, HttpStatus httpStatus, Exception ex) {
+        log.error("Request url: {}", url, ex);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        ErrorMessageResponse errorMessageResponse = new ErrorMessageResponse(ex.getMessage(), httpStatus.value());
+        return ResponseEntity
+                .status(httpStatus)
+                .headers(headers)
+                .body(errorMessageResponse);
+    }
 }
